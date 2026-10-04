@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pennylane-mcp-server"
+version = "1.0.0"
+description = "Serveur MCP pour l'API Pennylane - Outil d'expert-comptable"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+keywords = ["mcp", "pennylane", "comptabilite", "accounting", "expert-comptable"]
+dependencies = [
+    "mcp[cli]>=1.28.1,<2",  # mcp 2.x renomme FastMCP ; oauth.py est éprouvé en 1.28.1
+    "httpx>=0.27.0",
+    "pydantic>=2.0.0",
+    "uvicorn>=0.30.0",
+]
+
+[project.scripts]
+pennylane-mcp-server = "pennylane_mcp.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pennylane_mcp"]

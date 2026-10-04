@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Environnements virtuels
+.venv/
+venv/
+env/
+
+# Secrets — ne doivent JAMAIS entrer dans le depot
+.env
+.env.*
+!.env.example
+# dossiers.json : jetons Company API Pennylane, un par dossier client
+dossiers.json
+*.pem
+*.key
+
+# Sauvegardes locales
+*.bak*
+*.orig
+*.rej
+*.log
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

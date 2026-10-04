@@ -1,0 +1,37 @@
+# Mode serveur : le serveur MCP derrière Caddy, qui obtient seul le certificat HTTPS.
+# Prérequis : un .env rempli (voir .env.example) et les ports 80 et 443 ouverts.
+# Lancer : docker compose up -d --build
+services:
+  pennylane-mcp:
+    build: .
+    env_file: .env
+    environment:
+      MCP_TRANSPORT: streamable-http
+      MCP_HOST: 0.0.0.0
+      MCP_PORT: "8000"
+      MCP_OAUTH_ENABLED: "1"
+      # Jetons OAuth persistés : un redémarrage ne déconnecte pas claude.ai.
+      MCP_OAUTH_STATE: /state/oauth.json
+    volumes:
+      - oauth-state:/state
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2
+    environment:
+      MCP_DOMAIN: ${MCP_DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - pennylane-mcp
+    restart: unless-stopped
+
+volumes:
+  oauth-state:
+  caddy-data:
+  caddy-config:
